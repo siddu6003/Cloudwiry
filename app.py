@@ -1,9 +1,21 @@
 from flask import Flask, flash,render_template,request,redirect,session
 from flask import flash
+from pymongo import MongoClient
+
+
+client = MongoClient("mongodb+srv://siddu:valorant6003@cluster0.utg5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+db=client['Cloudwiry_users']
+collection=db.Credentials
+result=collection.find_one({'username':'admin'})
+res=result['password']
 
 Users={'admin':{'password':'admin'}}
 app=Flask(__name__)
 app.secret_key='123456'
+
+@app.route('/dbquery')
+def dbquery():
+    return str(res)
 
 @app.route('/',methods=['GET'])
 def index():
@@ -17,10 +29,12 @@ def register():
 def verify():
     u=request.form.get('username')
     p=request.form.get('password')
-
-    if u in Users:
-        if Users[u]['password']==p:
+    query=collection.find_one({'username':u})
+    if query is not None:
+        if query['password']==p:
             return redirect('success')
+        else :
+            return redirect('/')
     else:
         return redirect('/')
 
@@ -28,10 +42,11 @@ def verify():
 def register_user():
     u=request.form.get('username')
     p=request.form.get('password')
-    if u in Users:
+    query=collection.find_one({'username':u})
+    if query is not None:
         return redirect('/Register.html')
     else:
-        Users[u]={'password':p}
+        collection.insert_one({'username':u,'password':p})
         return redirect('/')
     
 @app.route('/success',methods=['GET'])
