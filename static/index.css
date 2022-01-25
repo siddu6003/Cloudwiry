@@ -20,7 +20,7 @@ body{
 #block2{
     text-align: center;
     padding: 5px;
-    width: 20%;
+    width: max-content;
     height: 100%;
     background-color:white;
     border-radius: 10px;
