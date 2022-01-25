@@ -20,7 +20,6 @@ def verify():
 
     if u in Users:
         if Users[u]['password']==p:
-            session['username']=u
             return redirect('success')
     else:
         return redirect('/')
