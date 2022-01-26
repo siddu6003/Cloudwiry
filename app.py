@@ -6,16 +6,14 @@ from pymongo import MongoClient
 client = MongoClient("mongodb+srv://siddu:valorant6003@cluster0.utg5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db=client['Cloudwiry_users']
 collection=db.Credentials
-result=collection.find_one({'username':'admin'})
-res=result['password']
+db2=client['Cloudwiry_users_files']
+collection2=db2.files
 
 Users={'admin':{'password':'admin'}}
 app=Flask(__name__)
 app.secret_key='123456'
 
-@app.route('/dbquery')
-def dbquery():
-    return str(res)
+
 
 @app.route('/',methods=['GET'])
 def index():
@@ -32,6 +30,7 @@ def verify():
     query=collection.find_one({'username':u})
     if query is not None:
         if query['password']==p:
+            session['username']=u
             return redirect('success')
         else :
             return redirect('/')
@@ -47,11 +46,33 @@ def register_user():
         return redirect('/Register.html')
     else:
         collection.insert_one({'username':u,'password':p})
+        collection2.insert_one({'username':u,'files':[]})
         return redirect('/')
     
 @app.route('/success',methods=['GET'])
 def success():
     return render_template('success.html')
+
+@app.route('/upload',methods=['GET','POST'])
+def upload():
+    
+    if request.method=='POST':
+        file=request.files['file']
+        query=collection2.find_one({'username':session['username']})
+        if query is not None:
+            collection2.update_one({'username':session['username']},{'$push':{'files':file.filename}})
+            return redirect('/success')
+        else:
+            return redirect('/success')
+    else:
+        return render_template('/success')
+
+@app.route('/download',methods=['GET','POST'])
+def download():
+    query=collection2.find_one({'username':session['username']})
+    if query is not None:
+        files=query['files'][0]
+        return files
 
 if __name__=="__main__":
     app.run(debug=True)
