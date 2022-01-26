@@ -74,5 +74,10 @@ def download():
         files=query['files'][0]
         return files
 
+@app.route('/logout',methods=['GET'])
+def logout():
+    session.pop('username',None)
+    return redirect('/')
+
 if __name__=="__main__":
     app.run(debug=True)
