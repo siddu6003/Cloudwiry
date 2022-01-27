@@ -12,9 +12,7 @@ collection2=db2.files
 
 Users={'admin':{'password':'admin'}}
 app=Flask(__name__)
-app.secret_key = 'A0AKR5TGD\ R~XHH!jmN]LWX/,?RT'
-app.config["SESSION_PERMANENT"] = True
-app.config["SESSION_TYPE"] = "filesystem"
+app.secret_key = '123456'
 Session(app)
 
 
