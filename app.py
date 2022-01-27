@@ -60,8 +60,8 @@ def register_user():
         collection2.insert_one({'username':u,'files':[]})
         return redirect('/')
     
-@app.route("/success/<username>")
-def success(username):
+@app.route("/success")
+def success():
     if "username" in session:
         s=session["username"]
         return render_template('success.html',name=s)
@@ -76,11 +76,11 @@ def upload():
         query=collection2.find_one({'username':session['username']})
         if query is not None:
             collection2.update_one({'username':session['username']},{'$push':{'files':file.filename}})
-            return redirect('/user')
+            return redirect('/success')
         else:
-            return redirect('/user')
+            return redirect('/')
     else:
-        return render_template('/user')
+        return render_template('/')
 
 @app.route('/download',methods=['GET','POST'])
 def download():
