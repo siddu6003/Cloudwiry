@@ -1,4 +1,4 @@
-from flask import Flask, flash,render_template,request,redirect,session
+from flask import Flask,url_for, flash,render_template,request,redirect,session
 from flask import flash
 from pymongo import MongoClient
 
@@ -32,15 +32,12 @@ def verify():
         if query is not None:
             if query['password']==p:
                 session["username"]=u
-                return redirect('success')
+                return redirect(url_for("success",username=u))
             else :
                 return redirect('/')
         else:
             return redirect('/')
     else :
-        if 'username' in session:
-            return redirect('success')
-
         return redirect('/')
 
 @app.route('/get',methods=['GET','POST']) 
@@ -63,10 +60,10 @@ def register_user():
         collection2.insert_one({'username':u,'files':[]})
         return redirect('/')
     
-@app.route('/success',methods=['GET'])
-def success():
-    if 'username' in session:
-        s=session['username']
+@app.route("/success/<username>")
+def success(username):
+    if "username" in session:
+        s=session["username"]
         return render_template('success.html',name=s)
     else:
         return redirect('/')
@@ -79,11 +76,11 @@ def upload():
         query=collection2.find_one({'username':session['username']})
         if query is not None:
             collection2.update_one({'username':session['username']},{'$push':{'files':file.filename}})
-            return redirect('/success')
+            return redirect('/user')
         else:
-            return redirect('/success')
+            return redirect('/user')
     else:
-        return render_template('/success')
+        return render_template('/user')
 
 @app.route('/download',methods=['GET','POST'])
 def download():
