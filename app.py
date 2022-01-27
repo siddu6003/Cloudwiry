@@ -39,7 +39,7 @@ def verify():
 
 @app.route('/get',methods=['GET','POST']) 
 def get():
-    if 'username' in session:
+    if session['username'] in session:
         s=session['username']
         return render_template('get.html',name=s)
     else:
