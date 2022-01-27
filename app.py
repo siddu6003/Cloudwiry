@@ -23,17 +23,25 @@ def index():
 def register():
     return render_template('Register.html')
 
-@app.route('/session',methods=['GET','POST'])
+@app.route('/valid',methods=['GET','POST'])
 def verify():
     u=request.form.get('username')
     p=request.form.get('password')
     query=collection.find_one({'username':u})
     if query is not None:
         if query['password']==p:
-            session['username']=u
-            return redirect('success')
+                session['username']=u
+                return redirect('success')
         else :
             return redirect('/')
+    else:
+        return redirect('/')
+
+@app.route('/get',methods=['GET','POST']) 
+def get():
+    if 'username' in session:
+        s=session['username']
+        return render_template('get.html',name=s)
     else:
         return redirect('/')
 
@@ -51,7 +59,11 @@ def register_user():
     
 @app.route('/success',methods=['GET'])
 def success():
-    return render_template('success.html')
+    if 'username' in session:
+        s=session['username']
+        return render_template('success.html',name=s)
+    else:
+        return redirect('/')
 
 @app.route('/upload',methods=['GET','POST'])
 def upload():
