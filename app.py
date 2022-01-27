@@ -1,5 +1,6 @@
 from flask import Flask,url_for, flash,render_template,request,redirect,session
 from flask import flash
+from flask_session import Session
 from pymongo import MongoClient
 
 
@@ -14,6 +15,7 @@ app=Flask(__name__)
 app.secret_key = 'A0AKR5TGD\ R~XHH!jmN]LWX/,?RT'
 app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 
 
