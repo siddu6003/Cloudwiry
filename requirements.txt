@@ -6,3 +6,4 @@ matplotlib
 sklearn
 gunicorn
 pymongo[srv]
+flask_session
