@@ -1,5 +1,6 @@
 from flask import Flask,url_for, flash,render_template,request,redirect,session
 from flask import flash
+from flask_session import Session
 from pymongo import MongoClient
 
 
@@ -11,7 +12,10 @@ collection2=db2.files
 
 Users={'admin':{'password':'admin'}}
 app=Flask(__name__)
-app.secret_key='123456'
+app.secret_key = 'A0AKR5TGD\ R~XHH!jmN]LWX/,?RT'
+app.config["SESSION_PERMANENT"] = True
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 
 
@@ -32,7 +36,8 @@ def verify():
         if query is not None:
             if query['password']==p:
                 session["username"]=u
-                return redirect(url_for("success",username=u))
+                print(session)
+                return redirect("/success")
             else :
                 return redirect('/')
         else:
