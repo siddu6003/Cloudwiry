@@ -25,21 +25,27 @@ def register():
 
 @app.route('/valid',methods=['GET','POST'])
 def verify():
-    u=request.form.get('username')
-    p=request.form.get('password')
-    query=collection.find_one({'username':u})
-    if query is not None:
-        if query['password']==p:
-                session['username']=u
+    if request.method=='POST':
+        u=request.form.get('username')
+        p=request.form.get('password')
+        query=collection.find_one({'username':u})
+        if query is not None:
+            if query['password']==p:
+                session["username"]=u
                 return redirect('success')
-        else :
+            else :
+                return redirect('/')
+        else:
             return redirect('/')
-    else:
+    else :
+        if 'username' in session:
+            return redirect('success')
+
         return redirect('/')
 
 @app.route('/get',methods=['GET','POST']) 
 def get():
-    if session['username'] in session:
+    if 'username' in session:
         s=session['username']
         return render_template('get.html',name=s)
     else:
@@ -86,9 +92,9 @@ def download():
         files=query['files'][0]
         return files
 
-@app.route('/logout',methods=['GET'])
+@app.route('/logout')
 def logout():
-    session['username']=None
+    session.pop('username',None)
     return redirect('/')
 
 if __name__=="__main__":
