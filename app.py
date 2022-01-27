@@ -88,7 +88,7 @@ def download():
 
 @app.route('/logout',methods=['GET'])
 def logout():
-    session.pop('username',None)
+    session['username']=None
     return redirect('/')
 
 if __name__=="__main__":
