@@ -6,4 +6,4 @@ matplotlib
 sklearn
 gunicorn
 pymongo[srv]
-os
+
