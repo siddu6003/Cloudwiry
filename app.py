@@ -2,7 +2,6 @@ from django.http import QueryDict
 from flask import Flask,url_for, flash,render_template,request,redirect,session
 from flask import flash
 from pymongo import MongoClient
-from flask_pymongo import PyMongo
 import os
 
 
@@ -18,7 +17,7 @@ collection3=db2['fs.files']
 app=Flask(__name__)
 app.secret_key='123456'
 app.config["MONGO_URI"] = "mongodb+srv://siddu:valorant6003@cluster0.utg5s.mongodb.net/Cloudwiry_users_files?retryWrites=true&w=majority"
-mongo=PyMongo(app)
+
 
 
 
