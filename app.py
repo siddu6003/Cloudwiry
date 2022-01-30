@@ -3,10 +3,6 @@ from flask import Flask,url_for, flash,render_template,request,redirect,session
 from flask import flash
 from pymongo import MongoClient
 from flask_pymongo import PyMongo
-from bson import Binary
-import base64
-import bson
-from bson.binary import Binary
 import os
 
 
