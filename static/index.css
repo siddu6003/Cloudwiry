@@ -46,3 +46,23 @@ input:focus{
 h2{
     color: #4083b9;
 }
+
+#block3{
+    text-align: center;
+    padding: 5px;
+    width: 500px;
+    height: 100%;
+    background-color:white;
+    border-radius: 10px;
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 100px #9ecaed;
+    margin-left: 20%;
+    margin-top: 12%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: inline-block;
+}
+
+.op{
+    display: inline;
+}

@@ -15,5 +15,19 @@
             <input type="submit" value="upload">
         </form>
     </div>
+    <div id="block2">
+        <h2>Your Files</h2>
+        <div>
+            <table>
+            {%for i in x%}
+            <tr>
+                <td><a href="static/users/{{name}}/{{i}}">{{i}}</a></td>
+                <td><form id="n" action="/logout" method="get"><input class="op" type="submit" value="Rename"></form></td>
+                <td><form action="/logout" method="get"><input class="op" type="submit" value="Delete"></form></td>
+            </tr>
+            {%endfor%}
+    </table>
+        </div>
+    </div>
 </body>
 </html>

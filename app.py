@@ -72,7 +72,11 @@ def register_user():
 def success():
     if "username" in session:
         s=session["username"]
-        return render_template('success.html',name=s)
+        file=[]
+        for i in os.listdir(os.path.join(app.config['UPLOAD_FOLDER'],session["username"])):
+            file.append(i)
+
+        return render_template('success.html',name=s,x=file)
     else:
         return redirect('/')
 
