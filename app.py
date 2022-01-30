@@ -1,3 +1,4 @@
+import shutil
 from flask import Flask,url_for, flash,render_template,request,redirect,session,send_from_directory
 from flask import flash
 from pymongo import MongoClient
@@ -120,6 +121,28 @@ def rename(file):
 def download(file):
     if 'username' in session:
         return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'],session['username']),file,as_attachment=True)
+    else:
+        return redirect('/')
+
+@app.route('/share/<file>',methods=['GET','POST'])
+def share(file):
+    if 'username' in session:
+        return render_template('share.html',name=file)
+    else:
+        return redirect('/')
+
+@app.route('/send/<file>',methods=['GET','POST'])
+def send(file):
+    if 'username' in session:
+        u=request.form.get('sharedname')
+        query=collection2.find_one({'username':u})
+        if query is not None:
+            file1=os.path.join(app.config['UPLOAD_FOLDER'],session['username'],file)
+            path2=os.path.join(app.config['UPLOAD_FOLDER'],u)
+            shutil.copy2(file1,path2)
+            return redirect('/share/'+file)
+        else:
+            return redirect('/success')
     else:
         return redirect('/')
 

@@ -9,11 +9,11 @@
     <div id="block1"><span><img id="logo" src="/static/cloudwiry.png" alt="image not available"/></span><span id="title">File Storage System</span><span><form action="/logout" method="get"><input type="submit" value="Logout"></form></span></div>
     <br>
     <div id="block2">
-        <h2>Rename Here</h2>
-        <h2>Please Provide the required extension as well or else your file wont be readable</h2>
-        <form id="form1" action="/rename/{{name}}" method="post">
-            <input type="text" name="filename" placeholder="new file name" required><br>
-            <input type="submit" value="rename">
+        <h2>Share From Here</h2>
+        <h2>Please Provide the correct username</h2>
+        <form id="form1" action="/send/{{name}}" method="post">
+            <input type="text" name="sharedname" placeholder="Enter the name of the person to be shared" required><br>
+            <input type="submit" value="Send">
         </form>
         <br>
     </div>
