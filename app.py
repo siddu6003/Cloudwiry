@@ -98,6 +98,24 @@ def delete(file):
     else:
         return redirect('/')
 
+
+@app.route('/re/<file>',methods=['GET','POST'])
+def re(file):
+    if 'username' in session:
+        return render_template('rename.html',name=file)
+    else:
+        return redirect('/')
+
+@app.route('/rename/<file>',methods=['GET','POST'])
+def rename(file):
+    if 'username' in session:
+        newname=request.form.get('filename')
+        os.rename(os.path.join(app.config['UPLOAD_FOLDER'],session['username'],file),os.path.join(app.config['UPLOAD_FOLDER'],session['username'],newname))
+        return redirect('/success')
+    else:
+        return redirect('/')
+
+
 @app.route('/<filename>')
 def download(filename):
         return redirect(url_for('static',filename='users/'+session['username']+'/'+filename))

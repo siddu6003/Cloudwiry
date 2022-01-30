@@ -22,7 +22,7 @@
             {%for i in x%}
             <tr>
                 <td><a href="static/users/{{name}}/{{i}}">{{i}}</a></td>
-                <td><form id="n" action="/rename" method="get"><input class="op" type="submit" value="Rename"></form></td>
+                <td><form id="n" action="/re/{{i}}" method="get"><input class="op" type="submit" value="Rename"></form></td>
                 <td><form action="/delete/{{i}}" method="get"><input class="op" type="submit" value="Delete"></form></td>
             </tr>
             {%endfor%}
