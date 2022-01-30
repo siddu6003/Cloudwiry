@@ -1,4 +1,3 @@
-from django.http import QueryDict
 from flask import Flask,url_for, flash,render_template,request,redirect,session
 from flask import flash
 from pymongo import MongoClient
