@@ -90,6 +90,14 @@ def upload():
     else:
         return render_template('/')
 
+@app.route('/delete/<file>')
+def delete(file):
+    if 'username' in session:
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'],session['username'],file))
+        return redirect('/success')
+    else:
+        return redirect('/')
+
 @app.route('/<filename>')
 def download(filename):
         return redirect(url_for('static',filename='users/'+session['username']+'/'+filename))
