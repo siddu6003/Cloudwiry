@@ -1,6 +1,14 @@
+from django.http import QueryDict
 from flask import Flask,url_for, flash,render_template,request,redirect,session
 from flask import flash
 from pymongo import MongoClient
+from flask_pymongo import PyMongo
+from bson import Binary
+import base64
+import bson
+from bson.binary import Binary
+import os
+
 
 
 client = MongoClient("mongodb+srv://siddu:valorant6003@cluster0.utg5s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
@@ -8,10 +16,14 @@ db=client['Cloudwiry_users']
 collection=db.Credentials
 db2=client['Cloudwiry_users_files']
 collection2=db2.files
+collection3=db2['fs.files']
 
-Users={'admin':{'password':'admin'}}
+
 app=Flask(__name__)
 app.secret_key='123456'
+app.config["MONGO_URI"] = "mongodb+srv://siddu:valorant6003@cluster0.utg5s.mongodb.net/Cloudwiry_users_files?retryWrites=true&w=majority"
+mongo=PyMongo(app)
+
 
 
 
@@ -48,6 +60,7 @@ def get():
     else:
         return redirect('/')
 
+app.config['UPLOAD_FOLDER'] = 'static/users'
 @app.route('/register',methods=['POST','GET'])
 def register_user():
     u=request.form.get('username')
@@ -58,6 +71,7 @@ def register_user():
     else:
         collection.insert_one({'username':u,'password':p})
         collection2.insert_one({'username':u,'files':[]})
+        os.mkdir(os.path.join(app.config['UPLOAD_FOLDER'],u))
         return redirect('/')
     
 @app.route("/success")
@@ -73,21 +87,14 @@ def upload():
     
     if request.method=='POST':
         file=request.files['file']
-        query=collection2.find_one({'username':session['username']})
-        if query is not None:
-            collection2.update_one({'username':session['username']},{'$push':{'files':file.filename}})
-            return redirect('/success')
-        else:
-            return redirect('/')
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'],session['username'],file.filename))
+        return redirect('/success')
     else:
         return render_template('/')
 
-@app.route('/download',methods=['GET','POST'])
-def download():
-    query=collection2.find_one({'username':session['username']})
-    if query is not None:
-        files=query['files'][0]
-        return files
+@app.route('/<filename>')
+def download(filename):
+        return redirect(url_for('static',filename='users/'+session['username']+'/'+filename))
 
 @app.route('/logout')
 def logout():
