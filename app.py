@@ -140,7 +140,6 @@ def send(file):
             file1=os.path.join(app.config['UPLOAD_FOLDER'],session['username'],file)
             path2=os.path.join(app.config['UPLOAD_FOLDER'],u)
             shutil.copy2(file1,path2)
-            return redirect('/share/'+file)
         else:
             return redirect('/success')
     else:
