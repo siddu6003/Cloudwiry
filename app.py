@@ -1,4 +1,4 @@
-from flask import Flask,url_for, flash,render_template,request,redirect,session
+from flask import Flask,url_for, flash,render_template,request,redirect,session,send_from_directory
 from flask import flash
 from pymongo import MongoClient
 import os
@@ -116,9 +116,12 @@ def rename(file):
         return redirect('/')
 
 
-@app.route('/<filename>')
-def download(filename):
-        return redirect(url_for('static',filename='users/'+session['username']+'/'+filename))
+@app.route('/download/<file>')
+def download(file):
+    if 'username' in session:
+        return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'],session['username']),file,as_attachment=True)
+    else:
+        return redirect('/')
 
 @app.route('/logout')
 def logout():
