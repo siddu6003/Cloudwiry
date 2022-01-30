@@ -11,6 +11,9 @@ body{
     background-color:rgb(141, 153, 156);
     display: flex;
     align-items: center;
+    position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
 }
 #title{
     font-size: 30px;
